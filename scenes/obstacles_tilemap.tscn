@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://obstacles_tileset.tres" type="TileSet" id=1]
+
+[node name="obstacles_tilemap" type="TileMap"]
+z_as_relative = false
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+cell_tile_origin = 2
+cell_y_sort = true
+show_collision = true
+collision_layer = 16
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -327646, 2, 0, 131082, 2, 0, 131093, 1, 0, 196625, 4, 0, 196630, 4, 0, 196635, 2, 0, 327686, 0, 0, 327694, 4, 0, 327712, 3, 0, 458770, 0, 0, 458779, 4, 0, 458783, 2, 0, 589842, 1, 0, 655368, 5, 0, 655376, 5, 0, 720920, 5, 0, 720924, 4, 0, 786438, 2, 0, 851996, 1, 0, 1048581, 1, 0, 1048597, 2, 0, 1048598, 5, 0, 1114122, 0, 0, 1114126, 1, 0, 1114142, 5, 0, 1245208, 0, 0, 1245214, 1, 0 )

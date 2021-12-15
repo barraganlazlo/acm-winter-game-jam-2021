@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Tileset002.png-12adabc800966f0929ce9a8603393636.stex"
+path="res://.import/Char_MainBack_Walk.png-700628ae8412b4ed879b09d79d04c044.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Tileset002.png"
-dest_files=[ "res://.import/Tileset002.png-12adabc800966f0929ce9a8603393636.stex" ]
+source_file="res://sprites/player/Char_MainBack_Walk.png"
+dest_files=[ "res://.import/Char_MainBack_Walk.png-700628ae8412b4ed879b09d79d04c044.stex" ]
 
 [params]
 

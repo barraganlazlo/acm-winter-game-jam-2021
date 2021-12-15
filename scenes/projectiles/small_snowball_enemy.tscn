@@ -4,10 +4,11 @@
 [ext_resource path="res://scripts/projectiles/small_snowball.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 3.82817
+radius = 3.0
 
-[node name="small_snowball" type="KinematicBody2D"]
+[node name="small_snowball_enemy" type="KinematicBody2D"]
 collision_layer = 8
+collision_mask = 17
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
