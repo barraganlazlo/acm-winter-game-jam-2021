@@ -1,7 +1,9 @@
 extends KinematicBody2D
 
+class_name SmallSnowball
+
 var velocity := Vector2(0,0)
-var damage:= 1
+var damage:int= 1
 var collided:=false
 
 func _ready()->void:
@@ -19,7 +21,7 @@ func _physics_process(delta:float)->void:
 		global.ysortNode.add_child(fx)
 		fx.global_position=global_position
 		queue_free()
-		
+
 
 func launch(init_velocity : Vector2, impact_damage : int)->void:
 	damage = impact_damage
