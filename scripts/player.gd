@@ -24,7 +24,7 @@ var move_direction:=Vector2.ZERO
 func _ready():
 	add_to_group("Player")
 
-func _physics_process(delta:float)->void:
+func _physics_process(_delta:float)->void:
 	var move_direction := Vector2.ZERO
 	move_direction.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	move_direction.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
