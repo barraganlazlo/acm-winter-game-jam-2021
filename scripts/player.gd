@@ -9,8 +9,8 @@ onready var snowball_starting_pos : Node2D= $snowball_starting_pos
 
 
 
-export var move_speed:int=12
-export var shoot_speed:int=24
+export var move_speed:int=10
+export var shoot_speed:int=32
 export var shoot_damages:int=1
 
 var moving:=false
@@ -50,7 +50,7 @@ func _physics_process(delta:float)->void:
 	sprite.flip_h=shoot_direction.x<0
 	
 	if shoot_input:
-		var small_snowball=global.small_snowball_player.instance()
+		var small_snowball:SmallSnowball=global.small_snowball_player.instance()
 		global.ysortNode.add_child(small_snowball)
 		small_snowball.global_position=snowball_starting_pos.global_position
 		small_snowball.launch(shoot_direction.normalized() * shoot_speed, shoot_damages)
@@ -58,3 +58,7 @@ func _physics_process(delta:float)->void:
 	var dodge_input:=Input.is_action_just_pressed("dodge")
 	if dodge_input :
 		dodging=true
+
+
+func take_damage(damages:int)->void:
+	pass

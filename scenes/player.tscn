@@ -94,8 +94,6 @@ resource_name = "roll"
 [node name="player" type="KinematicBody2D"]
 collision_mask = 18
 script = ExtResource( 2 )
-move_speed = 10
-shoot_speed = 37
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
