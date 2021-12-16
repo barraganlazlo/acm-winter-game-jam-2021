@@ -20,9 +20,6 @@ var last_move_direction:=Vector2.RIGHT
 
 #Input
 var move_direction:=Vector2.ZERO
-var dodge_input:=false
-var roll_input:=false
-var shoot_input:=false
 
 func _ready():
 	add_to_group("Player")

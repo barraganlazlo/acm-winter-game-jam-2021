@@ -28,8 +28,8 @@ script = ExtResource( 7 )
 
 [node name="small_snowman" parent="navigation/ysort" instance=ExtResource( 3 )]
 position = Vector2( 121, 112 )
-start_hitpoints = null
-target_player_distance = null
+start_hitpoints = 10
+target_player_distance = 100.0
 
 [node name="player" parent="navigation/ysort" instance=ExtResource( 1 )]
 position = Vector2( 481, 202 )
