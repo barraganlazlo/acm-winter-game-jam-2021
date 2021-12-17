@@ -10,6 +10,9 @@ var level_scene=preload("res://scenes/level.tscn")
 var settings_menu_scene=preload("res://scenes/ui/settings_menu.tscn")
 var fx_big_snowman_dead=preload("res://scenes/enemies/big_snowman_dead.tscn")
 var fx_small_snowman_dead=preload("res://scenes/enemies/small_snowman_dead.tscn")
+var player_scene=preload("res://scenes/player.tscn")
+var small_snowman=preload("res://scenes/enemies/small_snowman.tscn")
+var big_snowman=preload("res://scenes/enemies/big_snowman.tscn")
 
 var navigation_node : Pathfinding2D
 var ysort_node : YSort
@@ -67,3 +70,10 @@ func on_player_death():
 
 func show_death_menu():
 	death_menu_node.get_child(0).visible=true
+	
+func spawn_player(pos):
+	player_node=player_scene.instance()
+	ysort_node.add_child(player_node)
+	player_node.global_position=pos
+	
+

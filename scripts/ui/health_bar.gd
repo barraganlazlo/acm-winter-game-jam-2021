@@ -6,6 +6,7 @@ func _ready():
 	global.health_bar_node=self
 
 func update_health_bar(health_left:int,full_health:int):
+	visible=true
 	var full_hearts= health_left/4
 	var left_heart = health_left%4
 	var empty_hearts = full_health/4 - (full_hearts)
