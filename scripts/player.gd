@@ -60,7 +60,6 @@ var move_direction:=Vector2.ZERO
 
 func _ready()->void:
 	add_to_group("Player")
-	global.player_node=self
 	start_collision_layer=collision_layer
 	current_health=start_health
 	global.health_bar_node.update_health_bar(current_health,start_health)
@@ -112,7 +111,7 @@ func _physics_process(delta:float)->void:
 			else :
 				shoot_direction=(get_global_mouse_position() - global_position).normalized()
 			if shoot_direction==Vector2.ZERO :
-				shoot_direction=move_direction
+				shoot_direction=face_direction
 			rolling=false
 			var roll_damages:int=lerp(roll_snowball_min_damage,roll_snowball_max_damage,1-(roll_max_timer/roll_max_time))
 			var snowball_transform=roll_snowball.global_transform

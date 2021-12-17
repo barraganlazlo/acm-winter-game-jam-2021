@@ -5,7 +5,7 @@
 [node name="death_menu" type="CanvasLayer"]
 
 [node name="Panel" type="Panel" parent="."]
-self_modulate = Color( 1, 1, 1, 0.196078 )
+self_modulate = Color( 0, 0, 0, 0.470588 )
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 640, 360 )

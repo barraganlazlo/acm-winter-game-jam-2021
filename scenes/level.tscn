@@ -1,11 +1,7 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ground_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://scenes/enemies/small_snowman.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/obstacles/tree.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/navigation_polygon.gd" type="Script" id=5]
-[ext_resource path="res://scenes/obstacles/snow_tree.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/navigation.gd" type="Script" id=7]
 [ext_resource path="res://scripts/ui/health_bar.gd" type="Script" id=8]
 [ext_resource path="res://sprites/ui/hearts/hearth_full.tres" type="Texture" id=9]
@@ -14,20 +10,18 @@
 [ext_resource path="res://sprites/ui/hearts/hearth_3quarter.tres" type="Texture" id=12]
 [ext_resource path="res://sprites/ui/hearts/hearth_empty.tres" type="Texture" id=13]
 [ext_resource path="res://scripts/ysort.gd" type="Script" id=14]
-[ext_resource path="res://scripts/Camera2D.gd" type="Script" id=15]
 [ext_resource path="res://scripts/level.gd" type="Script" id=16]
-[ext_resource path="res://scenes/enemies/big_snowman.tscn" type="PackedScene" id=17]
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 10, 200 )
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 340, 10 )
 
 [sub_resource type="NavigationPolygon" id=3]
 vertices = PoolVector2Array( 640, 0, 640, 360, 0, 360, 0, 0 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 outlines = [ PoolVector2Array( 0, 0, 0, 360, 640, 360, 640, 0 ) ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 360 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 650, 10 )
 
 [node name="level" type="Node"]
 script = ExtResource( 16 )
@@ -35,6 +29,7 @@ script = ExtResource( 16 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="health_bar" type="HBoxContainer" parent="CanvasLayer"]
+visible = false
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 40.0
@@ -187,95 +182,50 @@ script = ExtResource( 7 )
 [node name="ysort" type="YSort" parent="navigation"]
 script = ExtResource( 14 )
 
-[node name="small_snowman" parent="navigation/ysort" instance=ExtResource( 3 )]
-position = Vector2( 121, 112 )
-
-[node name="small_snowman2" parent="navigation/ysort" instance=ExtResource( 3 )]
-position = Vector2( 110.291, 105.07 )
-
-[node name="player" parent="navigation/ysort" instance=ExtResource( 1 )]
-position = Vector2( 481, 202 )
-
-[node name="tree" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 169, 71 )
-
-[node name="tree2" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 484, 294 )
-
-[node name="tree3" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 199, 281 )
-
-[node name="tree4" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 312, 222 )
-
-[node name="snow_tree2" parent="navigation/ysort" groups=["Obstacles"] instance=ExtResource( 6 )]
-position = Vector2( 270.447, 102.235 )
-
-[node name="snow_tree" parent="navigation/ysort" groups=["Obstacles"] instance=ExtResource( 6 )]
-position = Vector2( 130.7, 200.451 )
-
-[node name="tree5" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 418, 76 )
-
-[node name="snow_tree3" parent="navigation/ysort" groups=["Obstacles"] instance=ExtResource( 6 )]
-position = Vector2( 369.785, 285.758 )
-
-[node name="snow_tree4" parent="navigation/ysort" groups=["Obstacles"] instance=ExtResource( 6 )]
-position = Vector2( 558.919, 139.838 )
-
-[node name="big_snowman" parent="navigation/ysort" instance=ExtResource( 17 )]
-position = Vector2( 545.272, 61.9086 )
-
-[node name="map_limits" type="Node2D" parent="navigation"]
-
-[node name="map_limit_left" type="StaticBody2D" parent="navigation/map_limits"]
-position = Vector2( -10, 180 )
-collision_layer = 16
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="navigation/map_limits/map_limit_left"]
-shape = SubResource( 2 )
-
-[node name="map_limit_top" type="StaticBody2D" parent="navigation/map_limits"]
-position = Vector2( 320, -10 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="navigation/map_limits/map_limit_top"]
-position = Vector2( -1, 0 )
-shape = SubResource( 1 )
-
-[node name="map_limit_bot" type="StaticBody2D" parent="navigation/map_limits"]
-position = Vector2( 320, 370 )
-collision_layer = 16
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="navigation/map_limits/map_limit_bot"]
-shape = SubResource( 1 )
-
-[node name="map_limit_right" type="StaticBody2D" parent="navigation/map_limits"]
-position = Vector2( 650, 180 )
-collision_layer = 16
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="navigation/map_limits/map_limit_right"]
-shape = SubResource( 2 )
-
 [node name="ground_tilemap" type="TileMap" parent="navigation"]
 z_index = -2
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 196630, 4, 0, 327691, 2, 0, 458760, 7, 0, 524309, 6, 0, 589839, 5, 0, 589853, 2, 0, 655372, 4, 0, 720903, 2, 0, 786457, 6, 0, 851971, 6, 0, 852000, 4, 0, 983051, 5, 0, 1114117, 5, 0, 1114145, 5, 0 )
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="navigation"]
-visible = false
 navpoly = SubResource( 3 )
 script = ExtResource( 5 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 320, 180 )
-current = true
-script = ExtResource( 15 )
+[node name="map_limits" type="Node2D" parent="."]
 
-[node name="Tween" type="Tween" parent="Camera2D"]
+[node name="map_limit_left" type="StaticBody2D" parent="map_limits"]
+position = Vector2( -10, 360 )
+collision_layer = 16
 
-[node name="Sprite" type="Sprite" parent="Camera2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="map_limits/map_limit_left"]
+shape = SubResource( 2 )
 
-[connection signal="tween_all_completed" from="Camera2D/Tween" to="Camera2D" method="_on_Tween_tween_all_completed"]
-[connection signal="tween_completed" from="Camera2D/Tween" to="Camera2D" method="_on_Tween_tween_completed"]
+[node name="map_limit_top" type="StaticBody2D" parent="map_limits"]
+position = Vector2( 640, -10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="map_limits/map_limit_top"]
+position = Vector2( -1, 0 )
+shape = SubResource( 1 )
+
+[node name="map_limit_bot" type="StaticBody2D" parent="map_limits"]
+position = Vector2( 640, 730 )
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="map_limits/map_limit_bot"]
+shape = SubResource( 1 )
+
+[node name="map_limit_right" type="StaticBody2D" parent="map_limits"]
+position = Vector2( 1285, 360 )
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="map_limits/map_limit_right"]
+shape = SubResource( 2 )
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 1280, 720 )
+
+[node name="enemies_spawn_points" type="Node2D" parent="."]
+
+[node name="player_spawn_point" type="Node2D" parent="."]
+position = Vector2( 640, 360 )

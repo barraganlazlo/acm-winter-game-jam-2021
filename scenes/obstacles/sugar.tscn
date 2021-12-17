@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://sprites/obstacles/sugar.tres" type="Texture" id=1]
+
+[node name="sugar" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." groups=["ObstaclesPolygons"]]
+polygon = PoolVector2Array( -8.07307, -0.636284, -3.47688, -10.359, 0.412201, -9.47512, -4.27545, -0.493279 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -16 )
