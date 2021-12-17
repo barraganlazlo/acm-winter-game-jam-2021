@@ -45,7 +45,7 @@ _global_script_class_icons={
 [application]
 
 config/name="acm-winter-game-jam-2021"
-run/main_scene="res://scenes/level.tscn"
+run/main_scene="res://scenes/start_scene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
