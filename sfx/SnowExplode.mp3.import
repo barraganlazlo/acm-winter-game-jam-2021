@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/SnowExplode.mp3-3722d89dc7080d3f0dd80309b81b77fb.mp3str"
+
+[deps]
+
+source_file="res://sfx/SnowExplode.mp3"
+dest_files=[ "res://.import/SnowExplode.mp3-3722d89dc7080d3f0dd80309b81b77fb.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

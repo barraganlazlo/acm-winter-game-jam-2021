@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/ui/retry.gd" type="Script" id=1]
+[ext_resource path="res://sprites/ui/ui_buttons/ui_retry_pushed.tres" type="Texture" id=2]
+[ext_resource path="res://sprites/ui/ui_buttons/ui_retry.tres" type="Texture" id=3]
+[ext_resource path="res://sprites/ui/ui_buttons/ui_retry_hover.tres" type="Texture" id=4]
+
+[node name="TextureButton" type="TextureButton"]
+margin_top = 332.0
+margin_right = 49.0
+margin_bottom = 346.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 4 )
+texture_focused = ExtResource( 4 )
+stretch_mode = 2
+script = ExtResource( 1 )
+
+[connection signal="pressed" from="." to="." method="_on_TextureButton_pressed"]

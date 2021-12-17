@@ -9,7 +9,7 @@ onready var snowball_starting_pos : Node2D= $Sprite/snowball_starting_pos
 
 const roll_snowball_scene=preload("res://scenes/projectiles/roll_snowball_player.tscn")
 
-export var start_health:=12
+export var start_health:=24
 
 export var move_speed:=10.0
 
@@ -21,7 +21,7 @@ export var dodge_cooldown:=1.0
 export var dodge_invincible_time:=0.6
 export var dodge_speed:=15.0
 
-export var roll_max_time:=5.0
+export var roll_max_time:=3.0
 
 var roll_min_speed:=move_speed * 0.7
 
@@ -41,12 +41,17 @@ var roll_max_timer:=0.0
 var dodge_invincible_timer:=0.0
 var start_collision_layer:int
 var face_direction:Vector2
-var current_health:=12
+var current_health:int
 
 var dead:=false
 var roll_snowball:RollSnowballPlayer
-var roll_snowball_speed:=32.0
-var roll_snowball_max_size:=1.5
+var roll_snowball_min_damage:=1
+var roll_snowball_max_damage:=5
+var roll_snowball_min_speed:=8.0
+var roll_snowball_max_speed:=32.0
+var roll_snowball_min_time:=0.5
+var roll_snowball_max_time:=5.0
+var roll_snowball_max_size:=1.0
 var roll_snowball_min_size:=0.2
 #Input
 var move_direction:=Vector2.ZERO
@@ -68,6 +73,8 @@ func _physics_process(delta:float)->void:
 		shoot_timer-=delta
 	if dodge_timer > 0 :
 		dodge_timer-=delta
+	if roll_timer >0 :
+		roll_timer-=delta
 	if roll_max_timer >0 :
 		roll_max_timer-=delta
 		if roll_max_timer<0 :
@@ -103,12 +110,12 @@ func _physics_process(delta:float)->void:
 		var roll_stop_input:= !Input.is_action_pressed("roll")
 		if roll_stop_input or roll_max_timer <=0:
 			rolling=false
-			var roll_damages:int=lerp(1,20,1-(roll_max_timer/roll_max_time))
-			var snowball_pos=roll_snowball.global_position
-			var snowball_sc=roll_snowball.global_scale
-			var snowball_rot=roll_snowball.global_rotation
+			var roll_damages:int=lerp(roll_snowball_min_damage,roll_snowball_max_damage,1-(roll_max_timer/roll_max_time))
+			var snowball_transform=roll_snowball.global_transform
 			roll_snowball_pos.remove_child(roll_snowball)
-			roll_snowball.launch(snowball_pos,snowball_sc,snowball_rot,roll_direction,roll_snowball_speed,roll_damages)
+			var roll_snowball_speed=lerp(roll_snowball_min_speed,roll_snowball_max_speed,1-(roll_max_timer/roll_max_time))
+			var roll_snowball_time=lerp(roll_snowball_min_time,roll_snowball_max_time,1-(roll_max_timer/roll_max_time))
+			roll_snowball.launch(snowball_transform,roll_direction,roll_snowball_time,roll_snowball_speed,roll_damages)
 			
 	else :
 		regular_update(delta)
@@ -211,7 +218,7 @@ func launch_snowball()->void:
 
 
 func take_damage(damages:int)->void:
-	if invincible or dodge_invincible:
+	if invincible or dodge_invincible or dead:
 		return
 	current_health-=damages
 	if current_health<0 :

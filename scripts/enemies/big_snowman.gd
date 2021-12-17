@@ -1,10 +1,9 @@
 extends KinematicBody2D
 
-export var start_healthpoints := 50
-export var shoot_speed := 16
+export var start_healthpoints := 15
 export var shoot_damages := 1
+export var big_snowball_damages := 4
 export var action_cooldown:=1.0
-
 
 export var move_speed := 13
 export var target_player_distance := 1.0
@@ -25,6 +24,8 @@ onready var wave_timer:Timer=$wave_timer
 onready var attack_timer:Timer=$attack_timer
 onready var action_timer:Timer=$action_timer
 onready var animation_player:AnimationPlayer=$AnimationPlayer
+onready var big_snowball_sprite:Sprite=$big_snowball_sprite
+onready var health_bar:TextureProgress=$health_bar
 
 var healthpoints:int
 
@@ -36,6 +37,7 @@ var can_move:=true
 var can_attack:=true
 var can_do_action:=false
 var waves_to_launch:=0
+var static_body_snowball_collision_layer:int
 
 func _ready()->void:
 	add_to_group("Enemies")
@@ -48,6 +50,9 @@ func _ready()->void:
 	action_timer.set_wait_time(action_cooldown)
 	wave_timer.connect("timeout", self, "launch_snowball_wave")
 	wave_timer.set_wait_time(time_between_waves)
+	health_bar.max_value=start_healthpoints
+	health_bar.value=start_healthpoints
+	health_bar.visible=false
 
 func _physics_process(delta:float)->void:
 	if is_moving :
@@ -79,14 +84,14 @@ func launch_attack()->void:
 	wave_timer.start()
 
 func launch_snowball_wave()->void:
-	var player_direction =global_position.direction_to(global.player_node.global_position)
+	var player_direction =big_snowball_sprite.global_position.direction_to(global.player_node.global_position)
 	var angle:=0.0
 	for i in range(snowballs_launched_by_attack_wave):
-		var snowball:SmallSnowball=global.small_snowball_enemy.instance()
+		var snowball:BigSnowballEnemy=global.big_snowball_enemy.instance()
 		global.ysort_node.add_child(snowball)
-		snowball.global_position=global_position
+		snowball.global_position=big_snowball_sprite.global_position
 		var shoot_direction=player_direction.rotated(angle)
-		snowball.launch(shoot_direction.normalized() * shoot_speed, shoot_damages)
+		snowball.launch(shoot_direction.normalized() * global.shoot_speed, big_snowball_damages)
 		angle+=360.0/snowballs_launched_by_attack_wave
 	waves_to_launch-=1
 	if(waves_to_launch>0):
@@ -120,7 +125,7 @@ func end_move()->void:
 		global.ysort_node.add_child(snowball)
 		snowball.global_position=global_position
 		var shoot_direction=desired_direction.rotated(deg2rad(angle))
-		snowball.launch(shoot_direction.normalized() * shoot_speed, shoot_damages)
+		snowball.launch(shoot_direction.normalized() * global.shoot_speed, shoot_damages)
 		angle-=snowball_angle_diff_move
 
 func on_end_move_cd()->void:
@@ -139,8 +144,7 @@ func get_desired_direction()->Vector2 :
 	for obstacle in get_tree().get_nodes_in_group("ObstaclesPolygons"):
 		var obstacle_direction:=global_position.direction_to(obstacle.global_position)
 		var obstacle_distance:=global_position.distance_to(obstacle.global_position)
-		var obstacle_spring_strength:=0.0 #500.0 * (640/(1.0 + obstacle_distance * obstacle_distance * obstacle_distance))
-		obstacle_spring_strength=2*player_spring_strength/(obstacle_distance/obstacle_avoidance)
+		var obstacle_spring_strength:=2*player_spring_strength/(obstacle_distance/obstacle_avoidance)
 		new_desired_direction-=obstacle_direction * obstacle_spring_strength 
 	
 	for enemy in get_tree().get_nodes_in_group("Enemies"):
@@ -148,7 +152,7 @@ func get_desired_direction()->Vector2 :
 			continue
 		var enemy_direction:=global_position.direction_to(enemy.global_position)
 		var enemy_distance:=global_position.distance_to(enemy.global_position)
-		var enemy_spring_strength:=obstacle_avoidance/(1.0 + enemy_distance * enemy_distance * enemy_distance)
+		var enemy_spring_strength:=2*player_spring_strength/(enemy_distance/obstacle_avoidance)
 		new_desired_direction-=enemy_direction * enemy_spring_strength
 		
 		
@@ -158,6 +162,10 @@ func get_desired_direction()->Vector2 :
 
 func take_damage(damage:int)->void:
 	healthpoints-=damage
-	healthpoints-=damage
-	if healthpoints<0 :
+	health_bar.value=healthpoints
+	health_bar.visible=true
+	if healthpoints<=0 :
+		var dead_fx=global.fx_big_snowman_dead.instance()
+		global.ysort_node.add_child(dead_fx)
+		dead_fx.global_position=global_position
 		queue_free()

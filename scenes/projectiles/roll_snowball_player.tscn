@@ -57,6 +57,7 @@ position = Vector2( 16, -16 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="CollisionShape2D"]
+rotation = 3.76991
 texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CollisionShape2D/Sprite"]
@@ -79,9 +80,10 @@ space_override = 3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 5 )
 
-[node name="Area2D2" type="StaticBody2D" parent="."]
+[node name="Body2D" type="StaticBody2D" parent="."]
+visible = false
 position = Vector2( 16, -16 )
-collision_mask = 8
+collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body2D"]
 shape = SubResource( 2 )
