@@ -2,6 +2,9 @@ extends HBoxContainer
 
 class_name HealthBar
 
+func _ready():
+	global.health_bar_node=self
+
 func update_health_bar(health_left:int,full_health:int):
 	var full_hearts= health_left/4
 	var left_heart = health_left%4

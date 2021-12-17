@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://sprites/ui/UI_PressEnter.png" type="Texture" id=1]
+
+[node name="death_menu" type="CanvasLayer"]
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0.196078 )
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 640, 360 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+margin_right = 640.0
+margin_bottom = 360.0
+rect_min_size = Vector2( 640, 0 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer"]
+margin_left = 283.0
+margin_right = 356.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 0, 350 )
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="TextureButton" parent="Panel/HBoxContainer/VBoxContainer"]
+margin_top = 332.0
+margin_right = 73.0
+margin_bottom = 350.0
+texture_normal = ExtResource( 1 )
+stretch_mode = 2

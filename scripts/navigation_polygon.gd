@@ -1,6 +1,6 @@
 extends NavigationPolygonInstance
 
-func _ready():
+func update_nav():
 	var navigationPolygon := get_navigation_polygon()
 	for polygon in get_tree().get_nodes_in_group("ObstaclesPolygons"):
 		var new_shape:=PoolVector2Array()

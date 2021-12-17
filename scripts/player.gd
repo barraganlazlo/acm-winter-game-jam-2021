@@ -43,7 +43,7 @@ var start_collision_layer:int
 var face_direction:Vector2
 var current_health:=12
 
-
+var dead:=false
 var roll_snowball:RollSnowballPlayer
 var roll_snowball_speed:=32.0
 var roll_snowball_max_size:=1.5
@@ -53,10 +53,14 @@ var move_direction:=Vector2.ZERO
 
 func _ready()->void:
 	add_to_group("Player")
+	global.player_node=self
 	start_collision_layer=collision_layer
 	current_health=start_health
 	global.health_bar_node.update_health_bar(current_health,start_health)
+
 func _physics_process(delta:float)->void:
+	if dead :
+		return
 	if Input.is_action_just_pressed("invincible_cheat_code"):
 		invincible= !invincible
 	#timer
@@ -213,6 +217,13 @@ func take_damage(damages:int)->void:
 	if current_health<0 :
 		current_health=0
 	global.health_bar_node.update_health_bar(current_health,start_health)
+	if current_health==0 :
+		death()
+		
+func death()->void:
+	animation_player.play("dead")
+	dead=true
+	global.on_player_death()
 
 func shoot_frame_1()->void:
 	sprite.frame+=1

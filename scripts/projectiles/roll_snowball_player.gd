@@ -14,10 +14,10 @@ func _process(delta:float)->void:
 	var velocity:= speed * direction.normalized() * 10 
 	var collision=move_and_collide(velocity*delta)
 	if collision!=null :
+		position+=collision.remainder
 		for body in area2d.get_overlapping_bodies() :
 			if body.has_method("take_damage") :
 				body.take_damage(damage)
-		position+=collision.remainder
 		global.create_fx(global.fx_big_snow_hit,global_transform)
 		queue_free()
 

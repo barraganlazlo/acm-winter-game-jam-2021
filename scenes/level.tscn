@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ground_tileset.tres" type="TileSet" id=2]
@@ -13,6 +13,9 @@
 [ext_resource path="res://sprites/ui/hearts/hearth_quarter.tres" type="Texture" id=11]
 [ext_resource path="res://sprites/ui/hearts/hearth_3quarter.tres" type="Texture" id=12]
 [ext_resource path="res://sprites/ui/hearts/hearth_empty.tres" type="Texture" id=13]
+[ext_resource path="res://scripts/ysort.gd" type="Script" id=14]
+[ext_resource path="res://scripts/Camera2D.gd" type="Script" id=15]
+[ext_resource path="res://scripts/level.gd" type="Script" id=16]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 10, 200 )
@@ -25,26 +28,85 @@ vertices = PoolVector2Array( 640, 0, 640, 360, 0, 360, 0, 0 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 outlines = [ PoolVector2Array( 0, 0, 0, 360, 640, 360, 640, 0 ) ]
 
-[node name="level" type="Node2D"]
+[node name="level" type="Node"]
+script = ExtResource( 16 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="health_bar" type="HBoxContainer" parent="CanvasLayer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="heart_full" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_full"]]
+margin_right = 19.0
+margin_bottom = 35.0
+texture = ExtResource( 9 )
+
+[node name="heart_full2" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_full"]]
+margin_left = 23.0
+margin_right = 42.0
+margin_bottom = 35.0
+texture = ExtResource( 9 )
+
+[node name="heart_full3" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_full"]]
+margin_left = 46.0
+margin_right = 65.0
+margin_bottom = 35.0
+texture = ExtResource( 9 )
+
+[node name="heart_3quarter" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_3quarter"]]
+margin_left = 69.0
+margin_right = 88.0
+margin_bottom = 35.0
+texture = ExtResource( 12 )
+
+[node name="heart_half" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_half"]]
+margin_left = 92.0
+margin_right = 111.0
+margin_bottom = 35.0
+texture = ExtResource( 10 )
+
+[node name="heart_quarter" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_quarter"]]
+margin_left = 115.0
+margin_right = 134.0
+margin_bottom = 35.0
+texture = ExtResource( 11 )
+
+[node name="heart_empty" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_empty"]]
+margin_left = 138.0
+margin_right = 157.0
+margin_bottom = 35.0
+texture = ExtResource( 13 )
+
+[node name="heart_empty2" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_empty"]]
+margin_left = 161.0
+margin_right = 180.0
+margin_bottom = 35.0
+texture = ExtResource( 13 )
+
+[node name="heart_empty3" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_empty"]]
+margin_left = 184.0
+margin_right = 203.0
+margin_bottom = 35.0
+texture = ExtResource( 13 )
 
 [node name="navigation" type="Navigation2D" parent="."]
 script = ExtResource( 7 )
 
 [node name="ysort" type="YSort" parent="navigation"]
+script = ExtResource( 14 )
 
 [node name="small_snowman" parent="navigation/ysort" instance=ExtResource( 3 )]
 position = Vector2( 121, 112 )
 
 [node name="player" parent="navigation/ysort" instance=ExtResource( 1 )]
 position = Vector2( 481, 202 )
-move_speed = 10.0
-shoot_speed = 32.0
-shoot_damages = 1
-shoot_cooldown = 0.4
-dodge_cooldown = 1.0
-dodge_invincible_time = 0.6
-dodge_speed = 15.0
-roll_max_time = 5.0
 
 [node name="tree" parent="navigation/ysort" instance=ExtResource( 4 )]
 position = Vector2( 169, 71 )
@@ -115,67 +177,12 @@ visible = false
 navpoly = SubResource( 3 )
 script = ExtResource( 5 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 320, 180 )
+current = true
+script = ExtResource( 15 )
 
-[node name="health_bar" type="HBoxContainer" parent="CanvasLayer"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 8 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Tween" type="Tween" parent="Camera2D"]
 
-[node name="heart_full" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_full"]]
-margin_right = 19.0
-margin_bottom = 35.0
-texture = ExtResource( 9 )
-
-[node name="heart_full2" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_full"]]
-margin_left = 23.0
-margin_right = 42.0
-margin_bottom = 35.0
-texture = ExtResource( 9 )
-
-[node name="heart_full3" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_full"]]
-margin_left = 46.0
-margin_right = 65.0
-margin_bottom = 35.0
-texture = ExtResource( 9 )
-
-[node name="heart_3quarter" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_3quarter"]]
-margin_left = 69.0
-margin_right = 88.0
-margin_bottom = 35.0
-texture = ExtResource( 12 )
-
-[node name="heart_half" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_half"]]
-margin_left = 92.0
-margin_right = 111.0
-margin_bottom = 35.0
-texture = ExtResource( 10 )
-
-[node name="heart_quarter" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_quarter"]]
-margin_left = 115.0
-margin_right = 134.0
-margin_bottom = 35.0
-texture = ExtResource( 11 )
-
-[node name="heart_empty" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_empty"]]
-margin_left = 138.0
-margin_right = 157.0
-margin_bottom = 35.0
-texture = ExtResource( 13 )
-
-[node name="heart_empty2" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_empty"]]
-margin_left = 161.0
-margin_right = 180.0
-margin_bottom = 35.0
-texture = ExtResource( 13 )
-
-[node name="heart_empty3" type="TextureRect" parent="CanvasLayer/health_bar" groups=["heart_empty"]]
-margin_left = 184.0
-margin_right = 203.0
-margin_bottom = 35.0
-texture = ExtResource( 13 )
+[connection signal="tween_all_completed" from="Camera2D/Tween" to="Camera2D" method="_on_Tween_tween_all_completed"]
+[connection signal="tween_completed" from="Camera2D/Tween" to="Camera2D" method="_on_Tween_tween_completed"]
