@@ -2,11 +2,14 @@ extends Node
 
 var small_snowball_player= preload("res://scenes/projectiles/small_snowball_player.tscn")
 var small_snowball_enemy= preload("res://scenes/projectiles/small_snowball_enemy.tscn")
+var big_snowball_enemy= preload("res://scenes/projectiles/big_snowball_enemy.tscn")
 var fx_snow_hit= preload("res://scenes/fx/snow_hit.tscn")
 var fx_big_snow_hit= preload("res://scenes/fx/big_snow_hit.tscn")
 var death_menu_scene= preload("res://scenes/ui/death_menu.tscn")
 var level_scene=preload("res://scenes/level.tscn")
 var settings_menu_scene=preload("res://scenes/ui/settings_menu.tscn")
+var fx_big_snowman_dead=preload("res://scenes/enemies/big_snowman_dead.tscn")
+var fx_small_snowman_dead=preload("res://scenes/enemies/small_snowman_dead.tscn")
 
 var navigation_node : Pathfinding2D
 var ysort_node : YSort
@@ -14,7 +17,7 @@ var player_node : Player
 var health_bar_node : HealthBar
 var camera_node : Camera2D
 var level_node : Node
-
+var shoot_speed:=12.0
 
 var death_menu_node
 var settings_menu_node
@@ -49,6 +52,9 @@ func retry():
 	Engine.time_scale=1.0
 	level_node=level_scene.instance()
 	add_child(level_node)
+	settings_menu_node.get_child(0).visible=false
+	death_menu_node.get_child(0).visible=false
+	get_tree().paused=false
 
 func show_hide_settings() :
 	level_node.pause_mode=Node.PAUSE_MODE_STOP

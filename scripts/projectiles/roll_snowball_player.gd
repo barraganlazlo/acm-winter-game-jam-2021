@@ -15,18 +15,18 @@ func _process(delta:float)->void:
 	var collision=move_and_collide(velocity*delta)
 	if collision!=null :
 		position+=collision.remainder
+		if collision.collider.has_method("take_damage"):
+			collision.collider.take_damage(damage)
 		for body in area2d.get_overlapping_bodies() :
-			if body.has_method("take_damage") :
+			if body.has_method("take_damage") and body!=collision.collider:
 				body.take_damage(damage)
 		global.create_fx(global.fx_big_snow_hit,global_transform)
 		queue_free()
 
-func launch(global_pos:Vector2,global_sc:Vector2,global_rot:float,launch_direction:Vector2, launch_speed:float,launch_damage:float):
+func launch(global_tr:Transform,launch_direction:Vector2, launch_time:float, launch_speed:float,launch_damage:float):
 	direction=launch_direction
 	speed=launch_speed
 	launched=true
 	global.ysort_node.add_child(self)
-	global_position=global_pos
-	global_scale=global_sc
-	global_rotation=global_rot
+	global_transform=global_tr
 	damage=launch_damage

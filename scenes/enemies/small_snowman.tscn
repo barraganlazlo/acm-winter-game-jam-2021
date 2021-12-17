@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://sprites/small_snowman/Char_SnowmanA_Anger.png" type="Texture" id=1]
 [ext_resource path="res://scripts/enemies/small_snowman.gd" type="Script" id=2]
 [ext_resource path="res://sprites/small_snowman/Char_SnowmanA_Walk.png" type="Texture" id=3]
+[ext_resource path="res://scenes/ui/health_bar.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 8.0
@@ -22,25 +23,13 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 0, 1, 2, 1, 0, 1, 2, 1, 1 ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:self_modulate")
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = false
+tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 1, 1.2 ),
-"transitions": PoolRealArray( 1, 1, 1e-05 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0.866667, 0.529412, 0.529412, 1 ), Color( 1, 1, 1, 1 ) ]
-}
-tracks/2/type = "method"
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
 "times": PoolRealArray( 0.8 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -48,35 +37,25 @@ tracks/2/keys = {
 "method": "launch_attack"
 } ]
 }
-tracks/3/type = "bezier"
-tracks/3/path = NodePath(".:rotation_degrees")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = false
-tracks/3/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.2, 57.556, 0, -0.2, -60, 0.2, 60, 0, -0.2, -60, 0, 0, 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.6, 1, 1.2 )
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("Sprite:texture")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ ExtResource( 1 ) ]
 }
-tracks/5/type = "value"
-tracks/5/path = NodePath("Sprite:hframes")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite:hframes")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
@@ -194,6 +173,13 @@ tracks/2/keys = {
 collision_layer = 2
 collision_mask = 17
 script = ExtResource( 2 )
+
+[node name="health_bar" parent="." instance=ExtResource( 4 )]
+margin_left = -10.0
+margin_top = -29.0
+margin_right = 8.0
+margin_bottom = -27.0
+rect_min_size = Vector2( 18, 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -7 )
