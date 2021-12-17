@@ -21,6 +21,7 @@ export var dodge_cooldown:=1.0
 export var dodge_invincible_time:=0.6
 export var dodge_speed:=15.0
 
+export var roll_cooldown:=3.0
 export var roll_max_time:=3.0
 
 var roll_min_speed:=move_speed * 0.7
@@ -35,6 +36,7 @@ var last_move_direction:=Vector2.RIGHT
 var roll_direction:=Vector2.RIGHT
 var shoot_direction:=Vector2.RIGHT
 var dodge_direction:=Vector2.RIGHT
+var roll_timer:=0.0
 var shoot_timer:=0.0
 var dodge_timer:=0.0
 var roll_max_timer:=0.0
@@ -92,13 +94,8 @@ func _physics_process(delta:float)->void:
 		face_direction=dodge_direction
 	elif rolling:
 		var move_direction := Vector2.ZERO
-		if Input.get_connected_joypads().size()>0 :
-			move_direction.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-			move_direction.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
-		else :
-			move_direction = (get_global_mouse_position() - global_position)
-			if move_direction.length()<10:
-				move_direction=roll_direction
+		move_direction.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+		move_direction.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 		if move_direction!=Vector2.ZERO :
 			roll_direction=move_direction
 		face_direction=roll_direction
@@ -109,13 +106,20 @@ func _physics_process(delta:float)->void:
 		roll_snowball.scale=Vector2(current_size,current_size)
 		var roll_stop_input:= !Input.is_action_pressed("roll")
 		if roll_stop_input or roll_max_timer <=0:
+			if Input.get_connected_joypads().size()>0 :
+				shoot_direction.x = Input.get_action_strength("shoot_right") - Input.get_action_strength("shoot_left")
+				shoot_direction.y = Input.get_action_strength("shoot_down") - Input.get_action_strength("shoot_up")
+			else :
+				shoot_direction=(get_global_mouse_position() - global_position).normalized()
+			if shoot_direction==Vector2.ZERO :
+				shoot_direction=move_direction
 			rolling=false
 			var roll_damages:int=lerp(roll_snowball_min_damage,roll_snowball_max_damage,1-(roll_max_timer/roll_max_time))
 			var snowball_transform=roll_snowball.global_transform
 			roll_snowball_pos.remove_child(roll_snowball)
 			var roll_snowball_speed=lerp(roll_snowball_min_speed,roll_snowball_max_speed,1-(roll_max_timer/roll_max_time))
 			var roll_snowball_time=lerp(roll_snowball_min_time,roll_snowball_max_time,1-(roll_max_timer/roll_max_time))
-			roll_snowball.launch(snowball_transform,roll_direction,roll_snowball_time,roll_snowball_speed,roll_damages)
+			roll_snowball.launch(snowball_transform,shoot_direction.normalized(),roll_snowball_time,roll_snowball_speed,roll_damages)
 			
 	else :
 		regular_update(delta)
@@ -189,13 +193,14 @@ func regular_update(delta:float)->void:
 	
 	#ROLL
 	var roll_input:=Input.is_action_just_pressed("roll")
-	if roll_input :
+	if roll_input and roll_timer<=0 :
 		rolling=true
 		roll_max_timer=roll_max_time
 		roll_direction=face_direction
 		roll_snowball=roll_snowball_scene.instance()
 		roll_snowball.scale=Vector2(roll_snowball_min_size,roll_snowball_min_size)
 		roll_snowball_pos.add_child(roll_snowball)
+		roll_timer=roll_cooldown
 		return
 	#END ROLL
 	
