@@ -14,6 +14,12 @@ var player_scene=preload("res://scenes/player.tscn")
 var small_snowman=preload("res://scenes/enemies/small_snowman.tscn")
 var big_snowman=preload("res://scenes/enemies/big_snowman.tscn")
 
+
+var snow_tree=preload("res://scenes/obstacles/snow_tree.tscn")
+var tree=preload("res://scenes/obstacles/tree.tscn")
+var rock=preload("res://scenes/obstacles/rock.tscn")
+var sugar=preload("res://scenes/obstacles/sugar.tscn")
+
 var navigation_node : Pathfinding2D
 var ysort_node : YSort
 var player_node : Player

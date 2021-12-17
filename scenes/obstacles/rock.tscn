@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://sprites/obstacles/rock.tres" type="Texture" id=1]
+
+[node name="snow_tree" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." groups=["ObstaclesPolygons"]]
+polygon = PoolVector2Array( -11.7821, 0.0561371, -4.00397, -15.5002, 7.6633, -15.1467, 12.9666, 0.23291 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -8 )

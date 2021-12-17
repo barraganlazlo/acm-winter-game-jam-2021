@@ -1,9 +1,7 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://ground_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://scenes/obstacles/tree.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/navigation_polygon.gd" type="Script" id=5]
-[ext_resource path="res://scenes/obstacles/snow_tree.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/navigation.gd" type="Script" id=7]
 [ext_resource path="res://scripts/ui/health_bar.gd" type="Script" id=8]
 [ext_resource path="res://sprites/ui/hearts/hearth_full.tres" type="Texture" id=9]
@@ -183,33 +181,6 @@ script = ExtResource( 7 )
 
 [node name="ysort" type="YSort" parent="navigation"]
 script = ExtResource( 14 )
-
-[node name="tree" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 169, 71 )
-
-[node name="tree2" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 484, 294 )
-
-[node name="tree3" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 199, 281 )
-
-[node name="tree4" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 312, 222 )
-
-[node name="snow_tree2" parent="navigation/ysort" groups=["Obstacles"] instance=ExtResource( 6 )]
-position = Vector2( 270.447, 102.235 )
-
-[node name="snow_tree" parent="navigation/ysort" groups=["Obstacles"] instance=ExtResource( 6 )]
-position = Vector2( 130.7, 200.451 )
-
-[node name="tree5" parent="navigation/ysort" instance=ExtResource( 4 )]
-position = Vector2( 418, 76 )
-
-[node name="snow_tree3" parent="navigation/ysort" groups=["Obstacles"] instance=ExtResource( 6 )]
-position = Vector2( 369.785, 285.758 )
-
-[node name="snow_tree4" parent="navigation/ysort" groups=["Obstacles"] instance=ExtResource( 6 )]
-position = Vector2( 558.919, 139.838 )
 
 [node name="ground_tilemap" type="TileMap" parent="navigation"]
 z_index = -2

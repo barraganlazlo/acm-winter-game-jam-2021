@@ -14,16 +14,18 @@ onready var enemies_spawn_points=$enemies_spawn_points
 
 var timer_to_spawn_player:=0.1
 var spawned_player:=false
-var enemy_max_count:=20
-var time_to_next_spawn:=5.0
-var timer_to_next_spawn:=5.0
+var enemy_max_count:=12
+var time_to_next_spawn:=4.0
+var timer_to_next_spawn:=4.0
 var rng = RandomNumberGenerator.new()
 
+var num_obstacles_to_spawn:=32
 var spawn_margin:=50
 
-var player_spawn_distance=200
-var obstacle_spawn_distance=30
+var player_spawn_distance=400
 var enemy_spawn_distance=30
+
+var distance_between_obstacles=120
 
 func _ready():
 	left_limit.get_node("CollisionShape2D").shape.extents=Vector2(10.0,level_height+10.0)
@@ -34,10 +36,12 @@ func _ready():
 	top_limit.global_position=Vector2(level_width/2.0,-5)
 	bot_limit.get_node("CollisionShape2D").shape.extents=Vector2(level_width+10.0,10.0)
 	bot_limit.global_position=Vector2(level_width/2.0,level_height+5)
-	timer_to_next_spawn=time_to_next_spawn
+	timer_to_next_spawn=0.0
 	rng.randomize()
+	spawn_obstacles()
+	#spawn_decors()
 	nav.get_node("NavigationPolygonInstance").update_nav(level_width,level_height)
-
+	
 func _process(delta):
 	if not spawned_player :
 		if timer_to_spawn_player <=0 :
@@ -48,7 +52,7 @@ func _process(delta):
 	else :
 		if timer_to_next_spawn <=0 and enemy_max_count>get_tree().get_nodes_in_group("Enemies").size() :
 			timer_to_next_spawn=time_to_next_spawn
-			time_to_next_spawn*=0.9
+			time_to_next_spawn*=0.92
 			spawn_enemy(get_random_pos())
 		else :
 			timer_to_next_spawn-=delta
@@ -72,3 +76,29 @@ func spawn_enemy(pos:Vector2):
 		enemy=global.small_snowman.instance()
 	global.ysort_node.add_child(enemy)
 	enemy.global_position=pos
+
+func spawn_obstacles():
+	var array=PoolVector2Array()
+	var i:=0
+	while(i<num_obstacles_to_spawn):
+		var valid:=true
+		var pos=Vector2(rng.randf_range(spawn_margin,level_width-spawn_margin), rng.randf_range(spawn_margin,level_height-spawn_margin))
+		for v in array :
+			if(pos.distance_to(v)<distance_between_obstacles):
+				valid=false
+				break
+		if valid:
+			i+=1
+			array.append(pos)
+			var r =rng.randf_range(0.0,1.0)
+			var obstacle
+			if r<0.1 :
+				obstacle=global.sugar.instance()
+			elif r<0.4 :
+				obstacle=global.tree.instance()
+			elif r <0.3 :
+				obstacle=global.snow_tree.instance()
+			else :
+				obstacle=global.rock.instance()
+			global.ysort_node.add_child(obstacle)
+			obstacle.global_position=pos
