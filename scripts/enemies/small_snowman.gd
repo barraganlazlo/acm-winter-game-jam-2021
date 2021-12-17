@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-export var start_hitpoints := 10
+export var start_healthpoints := 10
 export var shoot_speed := 16
 export var shoot_damages := 1
 export var action_cooldown:=1.0
@@ -15,7 +15,7 @@ export var move_cooldown := 0.8
 export var snowballs_launched_by_move :int= 3
 export var snowball_angle_diff_move := 15.0
 
-export var min_player_distance_to_attack := 150.0
+export var min_player_distance_to_attack := 200.0
 export var attack_cooldown := 5.0
 export var snowballs_launched_by_attack_wave :int= 9
 export var waves := 3
@@ -26,7 +26,7 @@ onready var attack_timer:Timer=$attack_timer
 onready var action_timer:Timer=$action_timer
 onready var animation_player:AnimationPlayer=$AnimationPlayer
 
-var hitpoints:int
+var healthpoints:int
 
 var desired_velocity:=Vector2.ZERO
 var desired_direction:=Vector2.ZERO
@@ -37,9 +37,9 @@ var can_attack:=true
 var can_do_action:=false
 var waves_to_launch:=0
 
-func _ready():
+func _ready()->void:
 	add_to_group("Enemies")
-	hitpoints=start_hitpoints
+	healthpoints=start_healthpoints
 	move_timer.connect("timeout", self, "on_end_move_cd")
 	move_timer.set_wait_time(move_cooldown)
 	attack_timer.connect("timeout", self, "on_end_attack_cd")
@@ -59,7 +59,7 @@ func _physics_process(delta:float)->void:
 func _process(delta:float)->void:
 	if can_do_action :
 		if can_attack :
-			var player_distance:=global_position.distance_to(global.playerNode.global_position)
+			var player_distance:=global_position.distance_to(global.player_node.global_position)
 			if player_distance <= min_player_distance_to_attack :
 				begin_attack()
 				return
@@ -69,22 +69,21 @@ func _process(delta:float)->void:
 				begin_move()
 				return
 
-func begin_attack():
+func begin_attack()->void:
 	animation_player.play("attack")
 	can_do_action=false
 	can_attack=false	
 	waves_to_launch=waves
 
-func launch_attack():
-	print("ATACKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+func launch_attack()->void:
 	wave_timer.start()
 
-func launch_snowball_wave():
-	var player_direction =global_position.direction_to(global.playerNode.global_position)
+func launch_snowball_wave()->void:
+	var player_direction =global_position.direction_to(global.player_node.global_position)
 	var angle:=0.0
 	for i in range(snowballs_launched_by_attack_wave):
 		var snowball:SmallSnowball=global.small_snowball_enemy.instance()
-		global.ysortNode.add_child(snowball)
+		global.ysort_node.add_child(snowball)
 		snowball.global_position=global_position
 		var shoot_direction=player_direction.rotated(angle)
 		snowball.launch(shoot_direction.normalized() * shoot_speed, shoot_damages)
@@ -95,14 +94,14 @@ func launch_snowball_wave():
 	else :
 		end_attack()
 
-func end_attack():
+func end_attack()->void:
 	action_timer.start()
 	attack_timer.start()
 
-func on_end_attack_cd():
+func on_end_attack_cd()->void:
 	can_attack=true
 
-func begin_move():
+func begin_move()->void:
 	can_do_action=false
 	desired_velocity = desired_direction.normalized() * 10 * move_speed
 	is_moving=true
@@ -110,7 +109,7 @@ func begin_move():
 	animation_player.play("move")
 	moved_distance=0.0
 
-func end_move():
+func end_move()->void:
 	animation_player.play("idle")
 	action_timer.start()	
 	move_timer.start()
@@ -118,22 +117,22 @@ func end_move():
 	var angle=snowball_angle_diff_move * (snowballs_launched_by_move / 2)
 	for i in range(0,snowballs_launched_by_move) :
 		var snowball:SmallSnowball=global.small_snowball_enemy.instance()
-		global.ysortNode.add_child(snowball)
+		global.ysort_node.add_child(snowball)
 		snowball.global_position=global_position
 		var shoot_direction=desired_direction.rotated(deg2rad(angle))
 		snowball.launch(shoot_direction.normalized() * shoot_speed, shoot_damages)
 		angle-=snowball_angle_diff_move
 
-func on_end_move_cd():
+func on_end_move_cd()->void:
 	can_move=true
 
-func on_end_action_cd():
+func on_end_action_cd()->void:
 	can_do_action=true
 
 func get_desired_direction()->Vector2 :
 	var new_desired_direction:=Vector2.ZERO	
-	var player_direction:=global_position.direction_to(global.playerNode.global_position)
-	var player_distance:=global_position.distance_to(global.playerNode.global_position)
+	var player_direction:=global_position.direction_to(global.player_node.global_position)
+	var player_distance:=global_position.distance_to(global.player_node.global_position)
 	var player_spring_strength:=player_distance-target_player_distance
 	new_desired_direction+=player_direction * player_spring_strength
 	
@@ -158,7 +157,7 @@ func get_desired_direction()->Vector2 :
 	return new_desired_direction
 
 func take_damage(damage:int)->void:
-	hitpoints-=damage
-	hitpoints-=damage
-	if hitpoints<0 :
+	healthpoints-=damage
+	healthpoints-=damage
+	if healthpoints<0 :
 		queue_free()
