@@ -187,7 +187,6 @@ z_index = -2
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 196630, 4, 0, 327691, 2, 0, 458760, 7, 0, 524309, 6, 0, 589839, 5, 0, 589853, 2, 0, 655372, 4, 0, 720903, 2, 0, 786457, 6, 0, 851971, 6, 0, 852000, 4, 0, 983051, 5, 0, 1114117, 5, 0, 1114145, 5, 0 )
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="navigation"]
 navpoly = SubResource( 3 )

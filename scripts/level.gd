@@ -39,7 +39,7 @@ func _ready():
 	timer_to_next_spawn=0.0
 	rng.randomize()
 	spawn_obstacles()
-	#spawn_decors()
+	spawn_decors()
 	nav.get_node("NavigationPolygonInstance").update_nav(level_width,level_height)
 	
 func _process(delta):
@@ -96,9 +96,36 @@ func spawn_obstacles():
 				obstacle=global.sugar.instance()
 			elif r<0.4 :
 				obstacle=global.tree.instance()
-			elif r <0.3 :
+			elif r <0.8 :
 				obstacle=global.snow_tree.instance()
 			else :
 				obstacle=global.rock.instance()
 			global.ysort_node.add_child(obstacle)
 			obstacle.global_position=pos
+
+
+func spawn_decors():
+	var tilemap:TileMap=get_node("navigation/ground_tilemap")
+	tilemap.clear()
+	for d in range(30):
+			var i=rng.randi_range(0,level_width/16) 
+			var j=rng.randi_range(0,level_height/16) 
+			while(tilemap.get_cell(i,j)!=-1) :
+				i=rng.randi_range(0,level_width/16) 
+				j=rng.randi_range(0,level_height/16)
+			var r=rng.randf_range(0.0,1.0)
+			var id:int
+			if r <0.15 :
+				id=7
+			elif r <0.3 :
+				id=2
+			elif r <0.45 :
+				id=3
+			elif r <0.6 :
+				id=4
+			elif r <0.75 :
+				id=5
+			else :
+				id=6
+			tilemap.set_cellv(Vector2(i,j),id)
+			tilemap.update_dirty_quadrants()
