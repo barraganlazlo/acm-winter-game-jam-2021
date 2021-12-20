@@ -12,10 +12,17 @@ onready var nav=$navigation
 onready var player_spawn_point=$player_spawn_point
 onready var enemies_spawn_points=$enemies_spawn_points
 
+var score:=0
+var snowball_launch_by_player:=0
+var snowball_launch_by_enemies:=0
+var enemies_killed:=0
+var time_survived:=0.0
+var heal_picked_up:=0
+
 var timer_to_spawn_player:=0.1
 var spawned_player:=false
-var enemy_max_count:=12
-var time_to_next_spawn:=4.0
+var enemy_max_count:=20
+var time_to_next_spawn:=3.0
 var timer_to_next_spawn:=4.0
 var rng = RandomNumberGenerator.new()
 
@@ -43,6 +50,7 @@ func _ready():
 	nav.get_node("NavigationPolygonInstance").update_nav(level_width,level_height)
 	
 func _process(delta):
+	score=int(round(time_survived))+enemies_killed*10
 	if not spawned_player :
 		if timer_to_spawn_player <=0 :
 			spawned_player=true
@@ -50,9 +58,10 @@ func _process(delta):
 		else:
 			timer_to_spawn_player-=delta
 	else :
-		if timer_to_next_spawn <=0 and enemy_max_count>get_tree().get_nodes_in_group("Enemies").size() :
-			timer_to_next_spawn=time_to_next_spawn
-			time_to_next_spawn*=0.92
+		time_survived+=delta
+		var enemy_count=get_tree().get_nodes_in_group("Enemies").size()
+		if timer_to_next_spawn <=0 and enemy_count<enemy_max_count :
+			timer_to_next_spawn=enemy_count*time_to_next_spawn
 			spawn_enemy(get_random_pos())
 		else :
 			timer_to_next_spawn-=delta
@@ -107,7 +116,7 @@ func spawn_obstacles():
 func spawn_decors():
 	var tilemap:TileMap=get_node("navigation/ground_tilemap")
 	tilemap.clear()
-	for d in range(30):
+	for d in range(50):
 			var i=rng.randi_range(0,level_width/16) 
 			var j=rng.randi_range(0,level_height/16) 
 			while(tilemap.get_cell(i,j)!=-1) :

@@ -93,6 +93,7 @@ func launch_snowball_wave()->void:
 		var shoot_direction=player_direction.rotated(angle)
 		snowball.launch(shoot_direction.normalized() * global.shoot_speed, big_snowball_damages)
 		angle+=360.0/snowballs_launched_by_attack_wave
+		global.level_node.snowball_launch_by_enemies+=1
 	waves_to_launch-=1
 	if(waves_to_launch>0):
 		wave_timer.start()
@@ -127,6 +128,7 @@ func end_move()->void:
 		var shoot_direction=desired_direction.rotated(deg2rad(angle))
 		snowball.launch(shoot_direction.normalized() * global.shoot_speed, shoot_damages)
 		angle-=snowball_angle_diff_move
+		global.level_node.snowball_launch_by_enemies+=1
 
 func on_end_move_cd()->void:
 	can_move=true
@@ -168,4 +170,9 @@ func take_damage(damage:int)->void:
 		var dead_fx=global.fx_big_snowman_dead.instance()
 		global.ysort_node.add_child(dead_fx)
 		dead_fx.global_position=global_position
+		global.level_node.enemies_killed+=1
+		if global.level_node.enemies_killed%5==0 :
+			var h=global.heal.instance()
+			global.ysort_node.add_child(h)
+			h.global_position=global_position
 		queue_free()

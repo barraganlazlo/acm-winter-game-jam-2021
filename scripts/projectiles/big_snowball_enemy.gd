@@ -41,5 +41,6 @@ func explode():
 		snowball.global_position=global_position
 		var shoot_direction=start_direction.rotated(angle)
 		snowball.launch(shoot_direction.normalized() * global.shoot_speed, shoot_damages)
-		angle+=360.0/snowballs_launched_on_explode	
+		angle+=360.0/snowballs_launched_on_explode
+		global.level_node.snowball_launch_by_enemies+=1
 	queue_free()

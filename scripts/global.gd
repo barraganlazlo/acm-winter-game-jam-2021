@@ -19,6 +19,7 @@ var snow_tree=preload("res://scenes/obstacles/snow_tree.tscn")
 var tree=preload("res://scenes/obstacles/tree.tscn")
 var rock=preload("res://scenes/obstacles/rock.tscn")
 var sugar=preload("res://scenes/obstacles/sugar.tscn")
+var heal=preload("res://scenes/heal.tscn")
 
 var navigation_node : Pathfinding2D
 var ysort_node : YSort
@@ -30,6 +31,7 @@ var shoot_speed:=12.0
 
 var death_menu_node
 var settings_menu_node
+
 
 func create_fx(fx_to_instance,transform_to_instacne):
 	var fx=fx_to_instance.instance()
@@ -49,7 +51,11 @@ func _ready():
 	settings_menu_node.get_child(0).visible=false
 	settings_menu_node.pause_mode=Node.PAUSE_MODE_PROCESS
 	
-	
+	var music:=AudioStreamPlayer.new()
+	music.stream=load("res://sfx/Nullsleep - silent night.mp3")
+	music.volume_db=-15
+	add_child(music)
+	music.play()
 
 func _process(_delta:float)->void:
 	if Input.is_action_just_pressed("ui_menu") :
@@ -58,6 +64,13 @@ func _process(_delta:float)->void:
 func retry():
 	if level_node!=null :
 		level_node.queue_free()
+	navigation_node =null
+	ysort_node=null
+	player_node=null
+	health_bar_node=null
+	camera_node=null
+	level_node=null
+	
 	Engine.time_scale=1.0
 	level_node=level_scene.instance()
 	add_child(level_node)
@@ -81,5 +94,3 @@ func spawn_player(pos):
 	player_node=player_scene.instance()
 	ysort_node.add_child(player_node)
 	player_node.global_position=pos
-	
-

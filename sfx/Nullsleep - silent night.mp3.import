@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Nullsleep - silent night.mp3-971ae78b48a09d7ed67ba504810ae603.mp3str"
+
+[deps]
+
+source_file="res://sfx/Nullsleep - silent night.mp3"
+dest_files=[ "res://.import/Nullsleep - silent night.mp3-971ae78b48a09d7ed67ba504810ae603.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -219,6 +219,8 @@ func launch_snowball()->void:
 	small_snowball.global_position=snowball_starting_pos.global_position
 	small_snowball.launch(shoot_direction.normalized() * shoot_speed, shoot_damages)
 	shoot_timer=shoot_cooldown
+	global.level_node.snowball_launch_by_player+=1
+	
 
 
 func take_damage(damages:int)->void:
@@ -245,6 +247,14 @@ func _on_AnimationPlayer_animation_finished(anim_name:String)->void:
 		dodge_timer=dodge_cooldown
 	elif anim_name=="shoot" or  anim_name=="shoot_back" :
 		launch_snowball()
+
+func heal(amount):
+	current_health+=amount
+	if current_health>start_health:
+		current_health=start_health
+	global.level_node.heal_picked_up+=1
+	global.health_bar_node.update_health_bar(current_health,start_health)
+	
 
 func _on_AnimationPlayer_animation_changed(old_name:String, new_name:String)->void:
 	if (new_name=="shoot" or  new_name=="shoot_back") :
